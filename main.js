@@ -37,10 +37,37 @@ for (let i = 0; i < pos_attr.count; i++) {
         pos_attr.setY(i, h_val);
 }
 island_geo.computeVertexNormals();
-
 const norm_attr = island_geo.attributes.normal;
 const colors = [];
 const color = new THREE.Color();
+
+for (let i = 0; i < pos_attr.count; i++) {
+const y = pos_attr.getY(i);
+const ny = norm_attr.getY(i);
+const slope = Math.acos(ny) * (180 / Math.PI);
+
+if (slope > 30) {
+    color.setHex(0x555555);
+} else if (y<5) {
+    color.setHex(0xf2d2a9);
+} else if (y < 100) {
+    color.setHex(0xffffff);
+} else {
+    color.setHex(0x1a4a1a);
+}
+colors.push(color.r, color.g, color.b);
+}
+island_geo.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3));
+
+const terrainMesh = new THREE.Mesh(
+    island_geo,
+    new THREE.MeshStandardMaterial({ vertexColors: true, roughness: 0.8})
+);
+terrainMesh.castShadow = true;
+terrainMesh.receiveShadow = true;
+scene.add(terrainMesh);
+
+console.log('Island birthed.');
 
 function animate() {
     requestAnimationFrame(animate);
