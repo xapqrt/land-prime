@@ -30,18 +30,17 @@ const pos_attr = island_geo.attributes.position;
 for (let i = 0; i < pos_attr.count; i++) {
      const x = pos_attr.getX(i);
      const z = pos_attr.getZ(i);
-     
-
- let h_val = noise2D(x * 0.005, z * 0.005) * 150;
-        h_val += noise2D(x * 0.01, z * 0.01) * 50;
-        h_val += noise2D(x * 0.05, z * 0.05) * 10;
-
-
-        const dist = Math.sqrt(x * x + z * z);
+     let h_val = noise2D(x * 0.005, z * 0.005) * 150 + noise2D(x * 0.01, z * 0.01) * 50 + noise2D(x * 0.05, z * 0.05) * 10;
+     const dist = Math.sqrt(x * x + z * z);
         h_val -= Math.max(0, dist * 0.15);
 
         pos_attr.setY(i, h_val);
 }
+island_geo.computeVertexNormals();
+
+const norm_attr = island_geo.attributes.normal;
+const colors = [];
+const color = new THREE.Color();
 
 function animate() {
     requestAnimationFrame(animate);
