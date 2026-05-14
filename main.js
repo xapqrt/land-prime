@@ -5,7 +5,7 @@ import { createNoise2D } from 'simplex-noise';
 console.log('booting up genesis prime...');
 
 const scene = new THREE.Scene();
-scene.background = new THREE.Color(0x0a0a0a);
+scene.background = new THREE.Color(0x87CEEB);
 
 const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
 camera.position.set(0, 500, 800);
@@ -68,6 +68,21 @@ terrainMesh.receiveShadow = true;
 scene.add(terrainMesh);
 
 console.log('Island birthed.');
+
+
+const water_geo = new THREE.PlaneGeometry(4000, 4000);
+water_geo.rotateX(-Math.PI / 2);
+const water_mat = new THREE.MeshStandardMaterial({
+    color: 0x0066ff,
+    transparent: true,
+    opacity: 0.8,
+    roughness: 0.1,
+    metalness: 0.8,
+});
+const water_thing = new THREE.Mesh(water_geo, water_mat);
+water_thing.position.y = 2;
+water_thing.receiveShadow = true;
+scene.add(water_thing);
 
 function animate() {
     requestAnimationFrame(animate);
