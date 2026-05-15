@@ -7,6 +7,9 @@ console.log('booting up genesis prime...');
 const scene = new THREE.Scene();
 scene.background = new THREE.Color(0x87CEEB);
 
+
+scene.fog = new THREE.FogExp2(0x87CEEB, 0.0008);
+
 const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
 camera.position.set(0, 500, 800);
 camera.lookAt(0, 0, 0);
@@ -67,9 +70,6 @@ terrainMesh.castShadow = true;
 terrainMesh.receiveShadow = true;
 scene.add(terrainMesh);
 
-console.log('Island birthed.');
-
-
 const water_geo = new THREE.PlaneGeometry(4000, 4000);
 water_geo.rotateX(-Math.PI / 2);
 const water_mat = new THREE.MeshStandardMaterial({
@@ -83,6 +83,23 @@ const water_thing = new THREE.Mesh(water_geo, water_mat);
 water_thing.position.y = 2;
 water_thing.receiveShadow = true;
 scene.add(water_thing);
+
+
+const sunLight = new THREE.DirectionalLight(0xfffff,1.5);
+sunLight.position.set(500,1000,200);
+sunLight.castShadow = true;
+sunLight.shadow.mapSize.width = 4096;
+sunLight.shadow.mapSize.height = 4096;
+sunLight.shadow.camera.near = 0.5;
+sunLight.shadow.camera.far = 3000;
+sunLight.shadow.camera.left = -1000;
+sunLight.shadow.camera.right = 1000;
+sunLight.shadow.camera.top = 1000;
+sunLight.shadow.camera.bottom = -1000;
+scene.add(sunLight);
+
+const ambientSky = new THREE.HemisphereLight(0x87CEEB, 0x1a4a1a, 0.6);
+scene.add(ambientSky);
 
 function animate() {
     requestAnimationFrame(animate);
