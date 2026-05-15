@@ -228,6 +228,34 @@ if (bh < -20) {
 }
 scene.add(boatGroup);
 
+
+
+const animalGroup = new THREE.Group();
+const animalMat = new THREE.MeshStandardMaterial({ color: 0xeeeeee });
+const animals = [];
+
+for (let i = 0; i < 40; i++) {
+   const ax = (Math.random() - 0.5) * 1200;
+   const az = (Math.random() - 0.5) * 1200;
+ 
+   let ah = noise2D(ax * 0.005, az * 0.005) * 150 + noise2D(ax * 0.01, az * 0.01) * 50 + noise2D(ax * 0.05, az * 0.05) * 10 - Math.max(0, Math.sqrt(ax*ax + az*az) * 0.15);
+
+
+if (ah > 5 && ah < 70) {
+  const animal = new THREE.Mesh(new THREE.BoxGeometry(3, 2, 4), animalMat);
+    animal.position.set(ax,ah,az);
+    animal.castShadow = true;
+    animalGroup.add(animal);
+
+   animals.push({
+    mesh: animal,
+    speed: Math.random() * 0.2 + 0.05,
+    turnSpeed: (Math.random() - 0.5) * 0.05
+   });
+}
+}
+scene.add(animalGroup);
+
 const clock = new THREE.Clock();
 
 function animate() {
