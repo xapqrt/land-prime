@@ -162,6 +162,38 @@ tribeGroup.add(dude);
 scene.add(tribeGroup);
 
 
+const villageGroup = new THREE.Group();
+const houseMat = new THREE.MeshStandardMaterial({ color: 0xddddcc, roughness: 1.0});
+const roofMat = new THREE.MeshStandardMaterial({ color: 0x8b4513, roughness: 0.9 });
+
+for (let i = 0; i < 25; i++) {
+    const hx = (Math.random() - 0.5) * 1000;
+    const hz = (Math.random() - 0.5) * 1000;
+
+let hh = noise2D(hx * 0.005, hz * 0.005) * 150 + noise2D(hx * 0.01, hz * 0.01) * 50 + noise2D(hx * 0.05, hz * 0.05) * 10 - Math.max(0, Math.sqrt(hx*hx + hz*hz) * 0.15);
+
+
+if (hh > 5 && hh < 60) {
+    const house = new THREE.Group();
+   
+    const base = new THREE.Mesh(new THREE.BoxGeometry(10, 8, 10), houseMat);
+    base.position.y = 4;
+    base.castShadow = true;
+    base.receiveShadow = true;
+
+    const roof = new THREE.Mesh(new THREE.ConeGeometry(8, 6, 4), roofMat);
+    roof.position.y = 11;
+    roof.rotation.y = Math.PI / 4;
+    roof.castShadow = true;
+
+    house.add(base);
+    house.add(roof);
+    house.position.set(hx, hh, hz);
+    villageGroup.add(house);
+}
+}
+scene.add(villageGroup);
+
 const boatGroup = new THREE.Group();
 const woodMat = new THREE.MeshStandardMaterial({ color: 0x5c4033 });
 const sailMat = new THREE.MeshStandardMaterial({ color: 0xeeeeee, side: THREE.DoubleSide });
