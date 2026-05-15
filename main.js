@@ -128,6 +128,39 @@ scene.add(sunLight);
 const ambientSky = new THREE.HemisphereLight(0x87CEEB, 0x1a4a1a, 0.6);
 scene.add(ambientSky);
 
+
+const tribeGroup = new THREE.Group();
+const skinMat = new THREE.MeshStandardMaterial({ color: 0xffcc99 });
+const shirtMat = new THREE.MeshStandardMaterial({ color: 0xcc2222 });
+
+for (let i =0; i < 60; i++) {
+    const tx = (Math.random() - 0.5) * 1200;
+    const tz = (Math.random() - 0.5) * 1200;
+
+
+let th = noise2D(tx * 0.005, tz * 0.005) * 150 + noise2D(tx * 0.01, tz * 0.01) * 50 + noise2D(tx * 0.05, tz * 0.05) * 10 - Math.max(0, Math.sqrt(tx*tx + tz*tz) * 0.15);
+
+
+if (th > 3 && th < 40) {
+const dude = new THREE.Group();
+const body = new THREE.BatchedMesh(new THREE.BoxGeometry(2,3,2), shirtMat);
+body.position.y = 1.5;
+body.castShadow = true;
+
+const head = new THREE.Mesh(new THREE.SphereGeometry(1.2, 8, 8), skinMat);
+head.position.y = 4;
+head.castShadow = true;
+
+dude.add(body);
+dude.add(head);
+dude.position.set(tx, th, tz);
+
+dude.rotation.y = Math.random() * Math.PI * 2;
+tribeGroup.add(dude);
+}
+}
+scene.add(tribeGroup);
+
 const clock = new THREE.Clock();
 
 function animate() {
