@@ -271,7 +271,15 @@ function animate() {
   });
   
   
-   controls.update();
+    animals.forEach(a => {
+        a.mesh.rotation.y += a.turnSpeed;
+            a.mesh.translateZ(-a.speed);
+   
+        a.mesh.position.y += Math.sin(time * 10 + a.mesh.position.x) * 0.05;
+  
+    });
+  
+  controls.update();
     renderer.render(scene, camera);
 }
 animate();
