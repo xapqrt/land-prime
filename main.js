@@ -6,8 +6,6 @@ console.log('booting up genesis prime...');
 
 const scene = new THREE.Scene();
 scene.background = new THREE.Color(0x87CEEB);
-
-
 scene.fog = new THREE.FogExp2(0x87CEEB, 0.0008);
 
 const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
@@ -70,6 +68,36 @@ terrainMesh.castShadow = true;
 terrainMesh.receiveShadow = true;
 scene.add(terrainMesh);
 
+
+const treeGroup = new THREE.Group();
+const bark = new THREE.MeshStandardMaterial({ color: 0x3d2817 });
+const leaves = new THREE.MeshStandardMaterial({ color: 0x0f30f0 });
+
+for (let i=0; i<150; i++) {
+    const x = (Math.random() - 0.5) * 1800;
+    const z = (Math.random() - 0.5) * 1800;
+
+
+let  h = noise2D(x * 0.005, z * 0.005) * 150 + noise2D(x * 0.01, z * 0.01) * 50 + noise2D(x * 0.05, z * 0.05) * 10 - Math.max(0, Math.sqrt(x*x + z*z) * 0.15);
+    
+if (h > 10 && h < 90) {
+    const tree = new THREE.Group();
+    const trunk = new  THREE.Mesh(new THREE.CylinderGeometry(2, 2, 10), bark);
+    trunk.position.y = 5;
+    trunk.castShadow = true;
+
+    const top1 = new THREE.Mesh(new THREE.ConeGeometry(8, 20), leaves);
+    top1.position.y = 15;
+    top1.castShadow = true;
+
+    tree.add(trunk);
+    tree.add(top1);
+    tree.position.set(x, h, z);
+    treeGroup.add(tree);
+}
+}
+scene.add(treeGroup);
+
 const water_geo = new THREE.PlaneGeometry(4000, 4000);
 water_geo.rotateX(-Math.PI / 2);
 const water_mat = new THREE.MeshStandardMaterial({
@@ -83,7 +111,6 @@ const water_thing = new THREE.Mesh(water_geo, water_mat);
 water_thing.position.y = 2;
 water_thing.receiveShadow = true;
 scene.add(water_thing);
-
 
 const sunLight = new THREE.DirectionalLight(0xfffff,1.5);
 sunLight.position.set(500,1000,200);
@@ -101,8 +128,14 @@ scene.add(sunLight);
 const ambientSky = new THREE.HemisphereLight(0x87CEEB, 0x1a4a1a, 0.6);
 scene.add(ambientSky);
 
+const clock = new THREE.Clock();
+
 function animate() {
     requestAnimationFrame(animate);
+   
+   const time = clock.getElapsedTime();
+   water_thing.position.y = 2 + Math.sin(time) * 3.0;
+   
     controls.update();
     renderer.render(scene, camera);
 }
