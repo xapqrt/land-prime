@@ -143,7 +143,7 @@ let th = noise2D(tx * 0.005, tz * 0.005) * 150 + noise2D(tx * 0.01, tz * 0.01) *
 
 if (th > 3 && th < 40) {
 const dude = new THREE.Group();
-const body = new THREE.BatchedMesh(new THREE.BoxGeometry(2,3,2), shirtMat);
+const body = new THREE.Mesh(new THREE.BoxGeometry(2,3,2), shirtMat);
 body.position.y = 1.5;
 body.castShadow = true;
 
