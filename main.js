@@ -161,6 +161,41 @@ tribeGroup.add(dude);
 }
 scene.add(tribeGroup);
 
+
+const boatGroup = new THREE.Group();
+const woodMat = new THREE.MeshStandardMaterial({ color: 0x5c4033 });
+const sailMat = new THREE.MeshStandardMaterial({ color: 0xeeeeee, side: THREE.DoubleSide });
+
+const boats = [];
+
+for (let i = 0; i < 30; i++) {
+  const bx = (Math.random() - 0.5) * 3000;
+const bz = (Math.random() - 0.5) * 3000;
+
+let bh = noise2D(bx * 0.005, bz * 0.005) * 150 + noise2D(bx * 0.01, bz * 0.01) * 50 + noise2D(bx * 0.05, bz * 0.05) * 10 - Math.max(0, Math.sqrt(bx*bx + bz*bz) * 0.15);
+
+
+if (bh < -20) {
+   const boat = new THREE.Group();
+   const hull = new THREE.Mesh(new THREE.BoxGeometry(6, 3, 14), woodMat);
+   hull.position.y = 1.5;
+    hull.castShadow = true;
+    const sail = new THREE.Mesh(new THREE.ConeGeometry(5, 12, 3), sailMat);
+    sail.position.y = 9;
+    sail.position.z = -2;
+    sail.castShadow = true;
+
+    boat.add(hull);
+    boat.add(sail);
+    boat.position.set(bx, 2 , bz);
+    boat.rotation.y = Math.random() * Math.PI * 2;
+    boatGroup.add(boat);
+
+    boats.push({ mesh: boat, speed: Math.random() * 0.5 + 0.1 });
+}
+}
+scene.add(boatGroup);
+
 const clock = new THREE.Clock();
 
 function animate() {
@@ -169,7 +204,14 @@ function animate() {
    const time = clock.getElapsedTime();
    water_thing.position.y = 2 + Math.sin(time) * 3.0;
    
-    controls.update();
+  
+  boats.forEach(b => {
+     b.mesh.translateZ(-b.speed);
+     b.mesh.position.y = 2 + Math.sin(time * 2 + b.mesh.position.x * 0.01) * 1.5;
+  });
+  
+  
+   controls.update();
     renderer.render(scene, camera);
 }
 animate();
