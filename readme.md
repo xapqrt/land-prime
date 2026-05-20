@@ -1,6 +1,21 @@
 
 # land-prime
+
+
+
+
 it generates land, boats, peopel, tribeds, houses, randomly on every reload on your browser, you can even moove and look arond!
+
+
+
+
+# LAPSE
+
+https://lapse.hackclub.com/timelapse/vunUi8HL11hE
+
+https://lapse.hackclub.com/timelapse/x7Ir80TL515n
+
+https://lapse.hackclub.com/timelapse/mgY-Y1hvNgxm
 
 ## Features
 
