@@ -1,6 +1,6 @@
-import * as THREE from 'three';
-import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
-import { createNoise2D } from 'simplex-noise';
+import * as THREE from 'https://esm.sh/three@0.184.0';
+import { OrbitControls } from 'https://esm.sh/three@0.184.0/examples/jsm/controls/OrbitControls.js';
+import { createNoise2D } from 'https://esm.sh/simplex-noise@4.0.3';
 
 console.log('booting up genesis prime...');
 
